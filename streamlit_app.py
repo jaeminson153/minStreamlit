@@ -57,3 +57,5 @@ if st.button("감정 분석 실행"):
         st.subheader("🔍 분석 결과")
         st.write(f"**감정 분류:** {label}")
         st.write(f"**확신도 (score):** {score:.2f}")
+
+
