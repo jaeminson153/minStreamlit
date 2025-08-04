@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from transformers import pipeline
 
 st.title("제목입니다")
 st.header("헤더입니다")
@@ -28,3 +29,31 @@ uploaded = st.file_uploader("CSV 파일을 업로드하세요", type="csv")
 if uploaded is not None:
     df = pd.read_csv(uploaded)
     st.write(df)
+
+
+
+
+# 감정 분석 파이프라인 불러오기
+@st.cache_resource
+def load_model():
+    return pipeline("sentiment-analysis")
+
+model = load_model()
+
+# Streamlit UI 구성
+st.title("🤗 Hugging Face 감정 분석기")
+st.write("텍스트를 입력하면 감정(긍정/부정)을 분석합니다.")
+
+# 사용자 입력 받기
+user_input = st.text_area("✍️ 분석할 문장을 입력하세요:", "I love Streamlit and Hugging Face!")
+
+# 버튼 클릭 시 감정 분석 수행
+if st.button("감정 분석 실행"):
+    with st.spinner("분석 중..."):
+        result = model(user_input)
+        label = result[0]['label']
+        score = result[0]['score']
+
+        st.subheader("🔍 분석 결과")
+        st.write(f"**감정 분류:** {label}")
+        st.write(f"**확신도 (score):** {score:.2f}")
