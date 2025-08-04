@@ -22,3 +22,9 @@ agree = st.checkbox("동의하십니까?")
 
 if st.button("클릭하세요"):
     st.success(f"{name}님, 반갑습니다!")
+
+
+uploaded = st.file_uploader("CSV 파일을 업로드하세요", type="csv")
+if uploaded is not None:
+    df = pd.read_csv(uploaded)
+    st.write(df)
